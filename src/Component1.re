@@ -17,7 +17,11 @@ let handleClick = (_event, _self) => Js.log("clicked!");
 let make = (~message, _children) => {
   ...component,
   render: self =>
-    <div onClick={self.handle(handleClick)}>
-      {ReasonReact.string(message)}
+    <div onClick={self.handle(handleClick)} className="card" style=ReactDOMRe.Style.make(~width="18rem", ())>
+      <div className="card-body">
+        <div className="card-text">
+          {ReasonReact.string(message)}
+        </div>
+      </div>
     </div>,
 };

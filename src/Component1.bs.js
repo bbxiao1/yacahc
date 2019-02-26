@@ -25,8 +25,16 @@ function make(message, _children) {
           /* shouldUpdate */component[/* shouldUpdate */8],
           /* render */(function (self) {
               return React.createElement("div", {
+                          className: "card",
+                          style: {
+                            width: "18rem"
+                          },
                           onClick: Curry._1(self[/* handle */0], handleClick)
-                        }, message);
+                        }, React.createElement("div", {
+                              className: "card-body"
+                            }, React.createElement("div", {
+                                  className: "card-text"
+                                }, message)));
             }),
           /* initialState */component[/* initialState */10],
           /* retainedProps */component[/* retainedProps */11],

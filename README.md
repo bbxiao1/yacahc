@@ -1,4 +1,11 @@
-# cas
+# yacahc
+
+## Sources
+
+- Cards: https://github.com/crhallberg/json-against-humanity/
+
+## TODO
+- Add license: https://creativecommons.org/licenses/by-nc-sa/2.0/
 
 ## Run Project
 
