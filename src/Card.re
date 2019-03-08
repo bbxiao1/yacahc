@@ -1,5 +1,6 @@
-/* This is the basic component. */
-let component = ReasonReact.statelessComponent("Component1");
+let card = ReasonReact.statelessComponent("Card");
+
+type color = White | Black;
 
 /* Your familiar handleClick from ReactJS. This mandatorily takes the payload,
    then the `self` record, which contains state (none here), `handle`, `reduce`
@@ -14,14 +15,19 @@ let handleClick = (_event, _self) => Js.log("clicked!");
    Which desugars to
 
    `ReasonReact.element(Component1.make(~message="hello", [||]))` */
-let make = (~message, _children) => {
-  ...component,
-  render: self =>
-    <div onClick={self.handle(handleClick)} className="card" style=ReactDOMRe.Style.make(~width="18rem", ())>
+let make = (~text, ~color, _children) => {
+  ...card,
+  render: _self => {
+    let style = switch (color){
+                | White => ReactDOMRe.Style.make(~width="18rem", ~margin="5px", ())
+                | Black => ReactDOMRe.Style.make(~width="18rem", ~margin="5px", ~backgroundColor="black", ~color="white", ())
+                };
+    <div className="card" style=style>
       <div className="card-body">
         <div className="card-text">
-          {ReasonReact.string(message)}
+          {ReasonReact.string(text)}
         </div>
       </div>
-    </div>,
+    </div>
+  },
 };
