@@ -19,8 +19,8 @@ let make = (~text, ~color, _children) => {
   ...card,
   render: _self => {
     let style = switch (color){
-                | White => ReactDOMRe.Style.make(~width="18rem", ~margin="5px", ())
-                | Black => ReactDOMRe.Style.make(~width="18rem", ~margin="5px", ~backgroundColor="black", ~color="white", ())
+                | White => ReactDOMRe.Style.make(~width="18rem", ~height="22rem", ~margin="5px", ())
+                | Black => ReactDOMRe.Style.make(~width="18rem", ~height="22rem", ~margin="5px", ~backgroundColor="black", ~color="white", ())
                 };
     <div className="card" style=style>
       <div className="card-body">

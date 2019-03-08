@@ -2,32 +2,42 @@
 'use strict';
 
 var List = require("bs-platform/lib/js/list.js");
+var Random = require("bs-platform/lib/js/random.js");
+var Caml_array = require("bs-platform/lib/js/caml_array.js");
 var ReactDOMRe = require("reason-react/src/ReactDOMRe.js");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
-var CardList$ReactTemplate = require("./CardList.bs.js");
+var BlackCardStack$ReactTemplate = require("./BlackCardStack.bs.js");
+var WhiteCardStack$ReactTemplate = require("./WhiteCardStack.bs.js");
 
 List.iter((function (param) {
-        var id = param[2];
-        var color = param[1];
+        var id = param[1];
         fetch(param[0]).then((function (prim) {
                     return prim.text();
                   })).then((function (text) {
                   return Promise.resolve(text.split("\n"));
                 })).then((function (texts) {
-                return Promise.resolve(ReactDOMRe.renderToElementWithId(ReasonReact.element(undefined, undefined, CardList$ReactTemplate.make(texts, color, /* array */[])), id));
+                Random.init(Date.now() | 0);
+                var l = texts.length;
+                for(var i = l - 1 | 0; i >= 0; --i){
+                  var r = Random.$$int(i + 1 | 0);
+                  console.log(r.toString());
+                  var tmp = Caml_array.caml_array_get(texts, i);
+                  Caml_array.caml_array_set(texts, i, Caml_array.caml_array_get(texts, r));
+                  Caml_array.caml_array_set(texts, r, tmp);
+                }
+                var tmp$1 = id === "blackstack" ? ReactDOMRe.renderToElementWithId(ReasonReact.element(undefined, undefined, BlackCardStack$ReactTemplate.make(texts, /* array */[])), id) : ReactDOMRe.renderToElementWithId(ReasonReact.element(undefined, undefined, WhiteCardStack$ReactTemplate.make(texts, /* array */[])), id);
+                return Promise.resolve(tmp$1);
               }));
         return /* () */0;
       }), /* :: */[
       /* tuple */[
         "/assets/black.txt",
-        /* Black */1,
-        "black"
+        "blackstack"
       ],
       /* :: */[
         /* tuple */[
           "/assets/white.txt",
-          /* White */0,
-          "white"
+          "whitestack"
         ],
         /* [] */0
       ]

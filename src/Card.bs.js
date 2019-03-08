@@ -26,9 +26,11 @@ function make(text, color, _children) {
               var style = color ? ({
                     backgroundColor: "black",
                     color: "white",
+                    height: "22rem",
                     margin: "5px",
                     width: "18rem"
                   }) : ({
+                    height: "22rem",
                     margin: "5px",
                     width: "18rem"
                   });
