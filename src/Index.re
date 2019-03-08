@@ -1,6 +1,3 @@
-[%raw {|require('./white.txt')|}];
-[%raw {|require('./black.txt')|}];
-
 Loader.load()
 |> Js.Promise.then_(firstCard => ReactDOMRe.renderToElementWithId(<Component1 message=firstCard />, "index1") |> Js.Promise.resolve);
 

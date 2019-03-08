@@ -7,10 +7,6 @@ var Loader$ReactTemplate = require("./cards/Loader.bs.js");
 var Component1$ReactTemplate = require("./Component1.bs.js");
 var Component2$ReactTemplate = require("./Component2.bs.js");
 
-((require('./white.txt')));
-
-((require('./black.txt')));
-
 Loader$ReactTemplate.load(/* () */0).then((function (firstCard) {
         return Promise.resolve(ReactDOMRe.renderToElementWithId(ReasonReact.element(undefined, undefined, Component1$ReactTemplate.make(firstCard, /* array */[])), "index1"));
       }));
