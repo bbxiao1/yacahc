@@ -1,4 +1,4 @@
-type stats = {
+type state = {
   activeCards: list(string)
 }
 
@@ -7,9 +7,7 @@ type action = Deal;
 let component = ReasonReact.reducerComponent("WhiteCardStack");
 let make = (~shuffled, _children) => {
   ...component,
-  initialState: () => {
-    {activeCards: Array.to_list(shuffled)}
-  },
+  initialState: () => {activeCards: Array.to_list(shuffled)},
 
   /* State transitions */
   reducer: (action, state) =>
