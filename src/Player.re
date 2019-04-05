@@ -9,7 +9,9 @@ type state = {
   isActive: bool,
 }
 
-type action = Select | Submit;
+type action =
+  | Select
+  | Submit;
 
 let component = ReasonReact.reducerComponent("Player");
 
@@ -17,13 +19,15 @@ let make = (~player, _children) => {
   ...component,
   initialState: () => {isActive: false},
 
-  reducer: (action, state) => {
+  reducer: (action, _state) => {
     switch (action) {
-    | Select => ReasonReact.Update(state);
-    | Submit => ReasonReact.Update(state);
+    | Select => ReasonReact.Update({isActive: true});
+    | Submit => ReasonReact.Update({isActive: false});
     }
   },
   render: _self => {
-    <div>{ReasonReact.string(player.name)}</div>;
+    <div>
+      {ReasonReact.string(player.name)}
+    </div>;
   },
 }

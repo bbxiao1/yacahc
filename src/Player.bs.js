@@ -18,15 +18,19 @@ function make(player, _children) {
           /* willUnmount */component[/* willUnmount */6],
           /* willUpdate */component[/* willUpdate */7],
           /* shouldUpdate */component[/* shouldUpdate */8],
-          /* render */(function (self) {
-              return React.createElement("div", undefined, self[/* state */1][/* name */3]);
+          /* render */(function (_self) {
+              return React.createElement("div", undefined, player[/* name */3]);
             }),
           /* initialState */(function (param) {
               return /* record */[/* isActive */false];
             }),
           /* retainedProps */component[/* retainedProps */11],
-          /* reducer */(function (action, state) {
-              return /* Update */Block.__(0, [state]);
+          /* reducer */(function (action, _state) {
+              if (action) {
+                return /* Update */Block.__(0, [/* record */[/* isActive */false]]);
+              } else {
+                return /* Update */Block.__(0, [/* record */[/* isActive */true]]);
+              }
             }),
           /* jsElementWrapped */component[/* jsElementWrapped */13]
         ];

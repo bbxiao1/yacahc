@@ -4,6 +4,7 @@
 var List = require("bs-platform/lib/js/list.js");
 var $$Array = require("bs-platform/lib/js/array.js");
 var Block = require("bs-platform/lib/js/block.js");
+var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
 var Card$ReactTemplate = require("./Card.bs.js");
@@ -12,6 +13,25 @@ var Player$ReactTemplate = require("./Player.bs.js");
 var component = ReasonReact.reducerComponent("Coordinator");
 
 function make(blackCards, whiteCards, _children) {
+  var take = function (_list, n, _accum) {
+    while(true) {
+      var accum = _accum;
+      var list = _list;
+      if (n !== 0) {
+        _accum = List.append(accum, /* :: */[
+              List.hd(list),
+              /* [] */0
+            ]);
+        _list = List.tl(list);
+        continue ;
+      } else {
+        return /* tuple */[
+                accum,
+                list
+              ];
+      }
+    };
+  };
   return /* record */[
           /* debugName */component[/* debugName */0],
           /* reactClassInternal */component[/* reactClassInternal */1],
@@ -22,17 +42,29 @@ function make(blackCards, whiteCards, _children) {
           /* willUnmount */component[/* willUnmount */6],
           /* willUpdate */component[/* willUpdate */7],
           /* shouldUpdate */component[/* shouldUpdate */8],
-          /* render */(function (self) {
-              var currentCard = List.hd(self[/* state */1][/* blackStack */1][/* available */0]);
-              var players = List.map((function (p) {
-                      return ReasonReact.element(undefined, undefined, Player$ReactTemplate.make(p[/* id */0], p[/* name */3], /* array */[]));
-                    }), self[/* state */1][/* players */0]);
-              return React.createElement("div", undefined, ReasonReact.element(undefined, undefined, Card$ReactTemplate.make(currentCard, /* Black */1, /* array */[])), $$Array.of_list(players), React.createElement("form", undefined, React.createElement("input", {
-                                  placeholder: "New Player Name"
-                                })));
+          /* render */(function (param) {
+              var send = param[/* send */3];
+              var state = param[/* state */1];
+              var currentCard = List.hd(state[/* game */0][/* blackStack */1][/* available */0]);
+              var players = $$Array.map((function (p) {
+                      return ReasonReact.element(String(p[/* id */0]), undefined, Player$ReactTemplate.make(p, /* array */[]));
+                    }), $$Array.of_list(state[/* game */0][/* players */0]));
+              return React.createElement("div", undefined, ReasonReact.element(undefined, undefined, Card$ReactTemplate.make(currentCard, /* Black */1, /* array */[])), React.createElement("br", undefined), React.createElement("form", undefined, React.createElement("input", {
+                                  placeholder: "New Player Name",
+                                  value: state[/* newPlayerName */1],
+                                  onChange: (function ($$event) {
+                                      return Curry._1(send, /* ChangePlayerName */Block.__(0, [$$event.target.value]));
+                                    })
+                                }), React.createElement("button", {
+                                  onClick: (function ($$event) {
+                                      $$event.preventDefault();
+                                      return Curry._1(send, /* AddPlayer */Block.__(1, [state[/* newPlayerName */1]]));
+                                    })
+                                }, "Create Player")), React.createElement("br", undefined), players);
             }),
           /* initialState */(function (param) {
-              return /* record */[/* game : record */[
+              return /* record */[
+                      /* game : record */[
                         /* players : [] */0,
                         /* blackStack : record */[
                           /* available */blackCards,
@@ -43,31 +75,65 @@ function make(blackCards, whiteCards, _children) {
                           /* color : White */0
                         ],
                         /* currentPlayer */0
-                      ]];
+                      ],
+                      /* newPlayerName */"",
+                      /* nextId */1
+                    ];
             }),
           /* retainedProps */component[/* retainedProps */11],
           /* reducer */(function (action, state) {
-              if (action) {
+              if (typeof action === "number") {
+                var blackStack = state[/* game */0][/* blackStack */1];
+                var available = List.tl(blackStack[/* available */0]);
+                var init = state[/* game */0];
                 return /* Update */Block.__(0, [/* record */[
-                            /* players */List.append(state[/* players */0], /* :: */[
-                                  action[0],
-                                  /* [] */0
-                                ]),
-                            /* blackStack */state[/* blackStack */1],
-                            /* whiteStack */state[/* whiteStack */2],
-                            /* currentPlayer */state[/* currentPlayer */3]
+                            /* game : record */[
+                              /* players */init[/* players */0],
+                              /* blackStack : record */[
+                                /* available */available,
+                                /* color */blackStack[/* color */1]
+                              ],
+                              /* whiteStack */init[/* whiteStack */2],
+                              /* currentPlayer */init[/* currentPlayer */3]
+                            ],
+                            /* newPlayerName */state[/* newPlayerName */1],
+                            /* nextId */state[/* nextId */2]
+                          ]]);
+              } else if (action.tag) {
+                var match = take(state[/* game */0][/* whiteStack */2][/* available */0], 7, /* [] */0);
+                var newPlayer_000 = /* id */state[/* nextId */2];
+                var newPlayer_001 = /* availableCards */match[0];
+                var newPlayer_003 = /* name */action[0];
+                var newPlayer = /* record */[
+                  newPlayer_000,
+                  newPlayer_001,
+                  /* points */0,
+                  newPlayer_003
+                ];
+                var players = List.append(state[/* game */0][/* players */0], /* :: */[
+                      newPlayer,
+                      /* [] */0
+                    ]);
+                var init$1 = state[/* game */0];
+                var init$2 = state[/* game */0][/* whiteStack */2];
+                return /* Update */Block.__(0, [/* record */[
+                            /* game : record */[
+                              /* players */players,
+                              /* blackStack */init$1[/* blackStack */1],
+                              /* whiteStack : record */[
+                                /* available */match[1],
+                                /* color */init$2[/* color */1]
+                              ],
+                              /* currentPlayer */init$1[/* currentPlayer */3]
+                            ],
+                            /* newPlayerName */"",
+                            /* nextId */state[/* nextId */2] + 1 | 0
                           ]]);
               } else {
-                var stack = List.tl(state[/* blackStack */1][/* available */0]);
-                var init = state[/* blackStack */1];
                 return /* Update */Block.__(0, [/* record */[
-                            /* players */state[/* players */0],
-                            /* blackStack : record */[
-                              /* available */stack,
-                              /* color */init[/* color */1]
-                            ],
-                            /* whiteStack */state[/* whiteStack */2],
-                            /* currentPlayer */state[/* currentPlayer */3]
+                            /* game */state[/* game */0],
+                            /* newPlayerName */action[0],
+                            /* nextId */state[/* nextId */2]
                           ]]);
               }
             }),
