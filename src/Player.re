@@ -5,29 +5,23 @@ type player = {
   name: string,
 }
 
-type state = {
-  isActive: bool,
-}
-
 type action =
   | Select
   | Submit;
 
-let component = ReasonReact.reducerComponent("Player");
+let component = ReasonReact.statelessComponent("Player");
 
-let make = (~player, _children) => {
+let make = (~update, ~player, _children) => {
   ...component,
-  initialState: () => {isActive: false},
-
-  reducer: (action, _state) => {
-    switch (action) {
-    | Select => ReasonReact.Update({isActive: true});
-    | Submit => ReasonReact.Update({isActive: false});
-    }
-  },
   render: _self => {
+    let cards = Array.map((c) => {
+      <Card text=c update color=Card.White />
+    }, Array.of_list(player.availableCards));
     <div>
-      {ReasonReact.string(player.name)}
+      <strong>{ReasonReact.string(player.name)}</strong><br />
+      <div style={ReactDOMRe.Style.make(~display="flex", ~flexWrap="wrap", ())}>
+        {ReasonReact.array(cards)}
+      </div>
     </div>;
   },
 }
